@@ -20,6 +20,10 @@ var currentNotes = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json
 
 // Routes
 // =============================================================
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/notes.html"))
+});
+
 // Returns notes.html file
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"))
