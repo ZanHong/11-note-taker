@@ -15,19 +15,22 @@ app.use(express.json());
 // make public available to front end
 app.use(express.static("public"));
 
-// Reads current notes in JSON format
-var currentNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+// Reads current notes (db.json) in JSON format
+var currentNotes = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json"), "utf-8"))
 
 // Routes
 // =============================================================
+// Returns notes.html file
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"))
 });
 
+// Read current notes and return all saved notes as JSON
 app.get("/api/notes", (req, res) => {
     return res.json(currentNotes);
 });
 
+// Receive new note, add it to db.json and return the new note
 app.post("/api/notes", (req, res) => {
     var newNote = req.body;
     newNote.id = currentNotes.length + 1;
@@ -37,6 +40,35 @@ app.post("/api/notes", (req, res) => {
     fs.writeFileSync("./db/db.json", JSON.stringify(currentNotes));
 
     res.json(newNote);
+
+    res.end();
+});
+
+// Delete a selected note
+app.delete("/api/notes/:id", (req, res) => {
+    let removedID = req.params.id;
+
+    // Remove notes of the selected ID
+    for (var i = 0; i < currentNotes.length; i++) {
+        const note = currentNotes[i];
+        if (note) {
+            if (note.id == removedID) {
+                // At position [i] remove 1 item which is the note of the selected ID
+                currentNotes.splice(i, 1);
+            }
+        }
+    }
+
+    // Rearrange notes
+    for (var i = 1; i < currentNotes.length; i++) {
+        const note = currentNotes[i];
+        if (note) {
+            note.id = i;
+        }
+    }
+
+    // Then rewrite the file
+    fs.writeFileSync("./db/db.json", JSON.stringify(currentNotes));
 
     res.end();
 });
