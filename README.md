@@ -1,7 +1,7 @@
 # Note Taker
 ## Description
 
-An application that allows users to write, save and delete notes so that they are constantly reminded with imoprtant tasks to complete and remove those that are accomplished. It uses an express backend and save and retrieve note data from a JSON file
+An application that allows users to write, save and delete notes so that they are constantly reminded with important tasks to complete and remove those that are accomplished. It uses an express backend and save and retrieve note data from a JSON file
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
